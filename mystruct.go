@@ -18,6 +18,8 @@ func main() {
 		return
 	}
 
+	adminUser, err := user.NewAdmin("aneesh", "gupta")
+	adminUser.OutputUserDetails() //adminUser.User.OutputUserDetails() will also work -> for OutputUserDetails, User struct must be exposed since this method is associated with User
 	appUser.OutputUserDetails()
 }
 
