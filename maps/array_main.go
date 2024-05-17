@@ -1,6 +1,12 @@
-package main
+package maps
 
 import "fmt"
+
+type Product struct {
+	id string
+	name string
+	date string
+}
 
 func main() {
 	hobbies := [3]string{"skating", "painting", "studying"}
@@ -14,6 +20,22 @@ func main() {
 	c := []int{2,4,6,1}
 	b = append(b, c...)
 	fmt.Println(b, c)
+
+	// map
+	a := map[Product]string{}
+	a[Product{
+		id: "Hello",
+		name: "Aneesh",
+		date: "Gupta",
+	}] = "gupta"
+	a[Product{
+		id: "Hello",
+		name: "Aneesh",
+		date: "Gupta",
+	}] = "Archit"
+	// a["archit"] = "gupta"
+	// delete(a, "aneesh")
+	fmt.Println(a)
 
 }
 
