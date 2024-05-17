@@ -5,7 +5,7 @@ import (
 	"example.com/mygo/user"
 )
 
-func main() {
+func main3() {
 	userFirstName := getUserData("Please enter your first name: ")
 	userLastName := getUserData("Please enter your last name: ")
 	userBirthdate := getUserData("Please enter your birthdate (MM/DD/YYYY): ")
