@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"example.com/mygo/notes"
-	"example.com/mygo/todo"
+	// "example.com/mygo/notes"
+	// "example.com/mygo/todo"
 )
 
 type saver interface {
@@ -18,36 +18,52 @@ type outputtable interface {
 	Display()
 }
 
+// func printValue(value any) {
+// 	typedVal, ok := value.(int)
+// 	fmt.Println(ok)
+// 	fmt.Println(typedVal)
+// }
+
+func add[T int | float64 | string](a, b T) T {
+	return a + b
+}
+
 func main() {
-	title, content := getNoteData()
-	todoContent := getUserInput("Todo Content: ")
 
-	userNote, err := note.New(title, content)	
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	err = outputData(userNote)
-	if err != nil {		
-		return
-	}
+	fmt.Println(add("hello", "world"))
+	fmt.Println(add(12, 23))
 
-	todo, err := todo.New(todoContent)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	err = outputData(todo)
-	if err != nil {		
-		return
-	}
-	
+	// printValue("10")
+	// title, content := getNoteData()
+	// todoContent := getUserInput("Todo Content: ")
+
+	// userNote, err := note.New(title, content)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// err = outputData(userNote)
+	// if err != nil {
+	// 	return
+	// }
+
+	// todo, err := todo.New(todoContent)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// err = outputData(todo)
+	// if err != nil {
+	// 	return
+	// }
+
 }
 
 // function accepting anything (Any value allowed)
 func randomFunction2(value any) {
 	fmt.Println(value)
 }
+
 // function accepting anything
 func randomFunction(value interface{}) {
 	// fmt.Println(value)
