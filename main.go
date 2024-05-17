@@ -28,7 +28,7 @@ func add[T int | float64 | string](a, b T) T {
 	return a + b
 }
 
-func main() {
+func main22() {
 
 	fmt.Println(add("hello", "world"))
 	fmt.Println(add(12, 23))
