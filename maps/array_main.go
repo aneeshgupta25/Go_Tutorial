@@ -8,6 +8,12 @@ type Product struct {
 	date string
 }
 
+type floatMap map[Product]string
+
+func (f floatMap) output() {
+	fmt.Println(f)
+}
+
 func main() {
 	hobbies := [3]string{"skating", "painting", "studying"}
 	fmt.Println(hobbies)
@@ -20,9 +26,14 @@ func main() {
 	c := []int{2,4,6,1}
 	b = append(b, c...)
 	fmt.Println(b, c)
+		
 
 	// map
-	a := map[Product]string{}
+	// make map for efficiency
+	a := make(map[Product]string, 4)
+	d := make(floatMap, 5)
+	d.output()
+
 	a[Product{
 		id: "Hello",
 		name: "Aneesh",
@@ -36,6 +47,20 @@ func main() {
 	// a["archit"] = "gupta"
 	// delete(a, "aneesh")
 	fmt.Println(a)
+
+	// iterating over arrays
+	array := []string{}
+	array = append(array, "aneesh")
+	array = append(array, "archit")
+
+	for index, value := range array {
+		fmt.Println(index, value)	
+	}
+
+	for _, value := range array {
+		// if index not required, replace with _
+		fmt.Println(value)
+	}
 
 }
 

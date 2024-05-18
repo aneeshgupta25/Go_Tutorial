@@ -1,117 +1,61 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
-	// "example.com/mygo/notes"
-	// "example.com/mygo/todo"
 )
 
-type saver interface {
-	Save() error
-}
+func main() {
+	a := []int{1,2,3,4}
+	fmt.Println(transformNumbers(&a, double))
+	fmt.Println(transformNumbers(&a, triple))
 
-type outputtable interface {
-	saver
-	Display()
-}
+	myfunction := helper(2)
+	fmt.Println(myfunction(3))
 
-// func printValue(value any) {
-// 	typedVal, ok := value.(int)
-// 	fmt.Println(ok)
-// 	fmt.Println(typedVal)
-// }
+	// anonymous function
+	anonymFunction(&a, func(num int) int {		
+		return num
+	})
 
-func add[T int | float64 | string](a, b T) T {
-	return a + b
-}
-
-func main22() {
-
-	fmt.Println(add("hello", "world"))
-	fmt.Println(add(12, 23))
-
-	// printValue("10")
-	// title, content := getNoteData()
-	// todoContent := getUserInput("Todo Content: ")
-
-	// userNote, err := note.New(title, content)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// err = outputData(userNote)
-	// if err != nil {
-	// 	return
-	// }
-
-	// todo, err := todo.New(todoContent)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// err = outputData(todo)
-	// if err != nil {
-	// 	return
-	// }
+	//variadic function
+	fmt.Println(variadicFunction(1,2,3,4,5,6,7,8,9,10))
+	fmt.Println(variadicFunction(a...))
 
 }
 
-// function accepting anything (Any value allowed)
-func randomFunction2(value any) {
-	fmt.Println(value)
+func transformNumbers(numbers *[]int, transform func(int) int) []int {
+	a := []int{}
+	for _,value := range *numbers {
+		a = append(a, transform(value))
+	}
+	return a
 }
 
-// function accepting anything
-func randomFunction(value interface{}) {
-	// fmt.Println(value)
-	switch value.(type) {
-	case int:
-		fmt.Println("Integer:", value)
-	case float64:
-		fmt.Println("Float64:", value)
-	case string:
-		fmt.Println("String:", value)
+func double(val int) int {
+	return val*2
+}
+
+func triple(val int) int {
+	return val*3
+}
+
+// returning a function
+func helper(factor int) func(int) int {
+	return func(number int) int {
+		return number * factor
 	}
 }
 
-func outputData(data outputtable) error {
-	data.Display()
-	return saveData(data)
-}
-
-func saveData(data saver) error {
-	err := data.Save()
-	if err != nil {
-		fmt.Println("Saving the content failed")
-		return err
+func anonymFunction(a *[]int, anFunc func(int) int) {
+	for _ , value := range *a {
+		fmt.Println(anFunc(value))
 	}
-	fmt.Println("Saving the content succeeded")
-	return nil
 }
 
-func getNoteData() (string, string) {
-	title := getUserInput("Note title:")
-	content := getUserInput("Note content:")
-
-	return title, content
-}
-
-func getUserInput(prompt string) string {
-	fmt.Printf("%v ", prompt)
-
-	reader := bufio.NewReader(os.Stdin)
-
-	text, err := reader.ReadString('\n')
-
-	if err != nil {
-		return ""
+func variadicFunction(numbers ...int) int {
+	sum := 0
+	for _, value := range numbers {
+		sum += value
 	}
-
-	text = strings.TrimSuffix(text, "\n")
-	text = strings.TrimSuffix(text, "\r")
-
-	return text
+	return sum
 }
