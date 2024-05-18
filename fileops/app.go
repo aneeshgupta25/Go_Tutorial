@@ -1,16 +1,15 @@
-package main
+package fileops
 
 import (
 	"errors"
-	"fmt"	
-	"example.com/mygo/fileops"
+	"fmt"		
 )
 
 const fileName = "aneesh.txt"
 
 func main2() {
-	greetHello()
-	revenue, err := fileops.GetFromFile(fileName)		
+	// greetHello()
+	revenue, err := GetFromFile(fileName)		
 	if(err != nil) {
 		revenue, err = printAndInput("Revenue")	
 		if err != nil {
@@ -31,14 +30,14 @@ func main2() {
 
 	ebt, profit, ratio := solve(revenue, expenses, taxRate)
 	results := fmt.Sprintf("EBT: %0.2f\nPROFIT: %0.2f\nRATIO: %0.2f")
-	fileops.WriteToFile(fileName, results)	
+	WriteToFile(fileName, results)	
 
 	fmt.Println(ebt)
 	fmt.Println(profit)
 	fmt.Println(ratio)
 	// fmt.Printf("%T", &expenses)
 
-	greetGoodbye()
+	// greetGoodbye()
 }
 
 func printAndInput(text string) (float64, error) {

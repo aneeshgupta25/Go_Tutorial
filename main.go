@@ -2,60 +2,44 @@ package main
 
 import (
 	"fmt"
+	// "strconv"
+	// "example.com/mygo/cmdmanager"
+	"example.com/mygo/filemanager"
+	"example.com/mygo/prices"
+	// "example.com/mygo/cmdmanager"
+	// "example.com/mygo/iomanager"
 )
 
 func main() {
-	a := []int{1,2,3,4}
-	fmt.Println(transformNumbers(&a, double))
-	fmt.Println(transformNumbers(&a, triple))
+	// var prices []float64 = []float64{1,2,3,4}
+	var taxRates []float64 = []float64{0,0.01,0.05,0.07}
 
-	myfunction := helper(2)
-	fmt.Println(myfunction(3))
+	// result := map[float64][]float64{}
+	// for _, rate_value := range taxRates {
+	// 	updatedPriceList := make([]float64, len(prices))
+	// 	for price_index, price_value := range prices {			
+	// 		updatedPriceList[price_index], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", price_value*(1+rate_value)), 64)
+	// 	}
+	// 	result[rate_value] = updatedPriceList
+	// }
+	// printMap(&result)
 
-	// anonymous function
-	anonymFunction(&a, func(num int) int {		
-		return num
-	})
-
-	//variadic function
-	fmt.Println(variadicFunction(1,2,3,4,5,6,7,8,9,10))
-	fmt.Println(variadicFunction(a...))
-
-}
-
-func transformNumbers(numbers *[]int, transform func(int) int) []int {
-	a := []int{}
-	for _,value := range *numbers {
-		a = append(a, transform(value))
-	}
-	return a
-}
-
-func double(val int) int {
-	return val*2
-}
-
-func triple(val int) int {
-	return val*3
-}
-
-// returning a function
-func helper(factor int) func(int) int {
-	return func(number int) int {
-		return number * factor
+	// taxIncludedJob, _ := prices.New(0.05)
+	// fmt.Println(taxIncludedJob.InputPriceList)
+	
+	for _, rate_value := range taxRates {
+		fm := filemanager.New("prices.txt", fmt.Sprintf("results_%.0f.json", rate_value*100))
+		// cmd := cmdmanager.New()
+		err := prices.New(fm, rate_value).Process()
+		if err != nil {
+			fmt.Println("Could not process job!")
+			fmt.Println(err)
+		}
 	}
 }
 
-func anonymFunction(a *[]int, anFunc func(int) int) {
-	for _ , value := range *a {
-		fmt.Println(anFunc(value))
+func printMap(m *map[float64][]float64) {
+	for key,value := range *m {
+		fmt.Println(key, value)
 	}
-}
-
-func variadicFunction(numbers ...int) int {
-	sum := 0
-	for _, value := range numbers {
-		sum += value
-	}
-	return sum
 }
