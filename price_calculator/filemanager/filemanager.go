@@ -2,9 +2,10 @@ package filemanager
 
 import (
 	"bufio"
-	"errors"
-	"os"
 	"encoding/json"
+	"errors"	
+	"os"
+	"time"
 )
 
 type FileManager struct {
@@ -24,6 +25,9 @@ func (fm FileManager) ReadFile() ([]string, error) {
 	if err != nil {		
 		return nil,errors.New("Couldn't open given file!")
 	}
+
+	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 	fileContent := []string{}
 	for scanner.Scan() {
@@ -31,10 +35,10 @@ func (fm FileManager) ReadFile() ([]string, error) {
 	}
 	fileError := scanner.Err()
 	if(fileError != nil) {
-		file.Close()
+		// file.Close()
 		return nil, errors.New("Couldn't read content of file!")
 	}
-	file.Close()
+	// file.Close()
 	return fileContent,nil
 }
 
@@ -53,6 +57,12 @@ func (fm FileManager) WriteResult(content interface{}) error {
 	if err != nil {
 		return errors.New("Couldn't convert to JSON!")
 	}
+
+	defer file.Close() // file.Close() will be automatically called once the function terminates either due to error or normally	
+
+	// Simulate slow process
+	time.Sleep(3*time.Second)
+
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(content)
 	if err != nil {

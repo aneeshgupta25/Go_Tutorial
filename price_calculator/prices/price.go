@@ -37,11 +37,13 @@ func (job *TaxIncludedPriceJob) Load() error {
 	return nil	
 }
 
-func (job *TaxIncludedPriceJob) Process() error {	
+func (job *TaxIncludedPriceJob) Process(doneChan chan bool, errChan chan error) {	
 	err := job.Load() 
+	// errChan <- errors.New("An Error!")
 	if err != nil {
 		fmt.Println("Unable to Load Input File!")
-		return err
+		errChan <- err
+		return
 	}	
 	updatedPriceList := make(map[string]string)
 	for _, price_value := range job.InputPriceList {			
@@ -50,7 +52,9 @@ func (job *TaxIncludedPriceJob) Process() error {
 	}
 	fmt.Println(updatedPriceList)	
 	job.TaxIncludedPriceList = updatedPriceList
-	return job.IOManager.WriteResult(job)	
+	job.IOManager.WriteResult(job)	
+
+	doneChan <- true
 }
 
 func New(iom iomanager.IOManager, rate float64) *TaxIncludedPriceJob {
