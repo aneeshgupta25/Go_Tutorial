@@ -2,44 +2,36 @@ package main
 
 import (
 	"fmt"
-	// "strconv"
-	// "example.com/mygo/cmdmanager"
-	"example.com/mygo/filemanager"
-	"example.com/mygo/prices"
-	// "example.com/mygo/cmdmanager"
-	// "example.com/mygo/iomanager"
+	"time"
 )
 
+func greet(phrase string, doneChan chan bool) {
+	fmt.Println("Hello!", phrase)
+	doneChan <- true
+}
+
+func slowGreet(phrase string, doneChan chan bool) {
+	time.Sleep(3 * time.Second) // simulate a slow, long-taking task
+	fmt.Println("Hello!", phrase)
+	doneChan <- true
+}
+
 func main() {
-	// var prices []float64 = []float64{1,2,3,4}
-	var taxRates []float64 = []float64{0,0.01,0.05,0.07}
+	// doneChan := make(chan bool)
+	doneChans := make([]chan bool, 4)
 
-	// result := map[float64][]float64{}
-	// for _, rate_value := range taxRates {
-	// 	updatedPriceList := make([]float64, len(prices))
-	// 	for price_index, price_value := range prices {			
-	// 		updatedPriceList[price_index], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", price_value*(1+rate_value)), 64)
-	// 	}
-	// 	result[rate_value] = updatedPriceList
-	// }
-	// printMap(&result)
+	doneChans[0] = make(chan bool)
+	go greet("Nice to meet you!", doneChans[0])
+	doneChans[1] = make(chan bool)
+	go greet("How are you?", doneChans[1])
+	doneChans[2] = make(chan bool)
+	go slowGreet("How ... are ... you ...?", doneChans[2])
+	doneChans[3] = make(chan bool)
+	go greet("I hope you're liking the course!", doneChans[3])
 
-	// taxIncludedJob, _ := prices.New(0.05)
-	// fmt.Println(taxIncludedJob.InputPriceList)
-	
-	for _, rate_value := range taxRates {
-		fm := filemanager.New("prices.txt", fmt.Sprintf("results_%.0f.json", rate_value*100))
-		// cmd := cmdmanager.New()
-		err := prices.New(fm, rate_value).Process()
-		if err != nil {
-			fmt.Println("Could not process job!")
-			fmt.Println(err)
-		}
+	for _, doneChan := range doneChans {
+		<- doneChan
 	}
 }
 
-func printMap(m *map[float64][]float64) {
-	for key,value := range *m {
-		fmt.Println(key, value)
-	}
-}
+// channel can be used to wait for the completion of a goroutine

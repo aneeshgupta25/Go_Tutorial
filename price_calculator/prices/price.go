@@ -6,9 +6,9 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"example.com/mygo/conversion"
+	"example.com/mygo/price_calculator/conversion"
 	// "example.com/mygo/filemanager"	
-	"example.com/mygo/iomanager"
+	"example.com/mygo/price_calculator/iomanager"
 )
 
 const fileName = "prices.txt"
